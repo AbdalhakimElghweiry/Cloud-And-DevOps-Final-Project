@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudscale-app
+  labels:
+    app: cloudscale-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cloudscale-app
+  template:
+    metadata:
+      labels:
+        app: cloudscale-app
+    spec:
+      containers:
+        - name: cloudscale-app
+          # CI/CD replaces REGISTRY/cloudscale-app:TAG before kubectl apply
+          image: REGISTRY/cloudscale-app:TAG
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
