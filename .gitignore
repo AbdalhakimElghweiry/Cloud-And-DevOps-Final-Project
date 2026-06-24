@@ -1,0 +1,32 @@
+# Terraform — never commit state or provider downloads
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.tfstate
+
+# tfvars can contain secrets — commit only example files
+*.tfvars
+!example.tfvars
+
+# Environment / secrets
+.env
+.env.*
+
+# Docker (the .dockerignore file itself is committed; ignore nothing else)
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Provider binaries — these are downloaded by terraform init and must not be committed
+# (This was the cause of the earlier push incident — keeping them gitignored.)
+terraform/providers/
+*.exe
+
+.claude/
